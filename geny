@@ -139,96 +139,69 @@ module MessagePrinter
         FileUtils.mkdir_p(name)
       end
   end
+
   module Library
 
-    def library_3 name, package, feature
-      create_library name, package, feature
+    def library_1 feature
+      create_library feature
     end
 
-    def create_library name, package, feature
-        activity = Activities.new
-        manifest = Manifest.new
-        folder = Folder.new
-        values = Values.new
-        gradle = Gradle.new
-        tests = Test.new
-        git = Git.new 
+    def create_library feature  
+
+        modelFactory = ModelSample.new
+        routesFactory = RoutesFactory.new
+        usecaseFactory = UseCaseSample.new
+        controllerFactory = ControllerFacotry.new
 
         #Core Library Directories
-        package = package + "." +name.downcase
-        manifest.package = package
-        tests.package = package
-        directory_name = name  + "/"
-        src_dir = directory_name+ "src/"
-        and_test_dir = src_dir + "androidTest/java/" + package + "/"
-        main_dir = src_dir + "main/"
-        java_dir = main_dir + "java/"
-        res_dir = main_dir + "res/"
-        layout_dir = res_dir + "layout/"
-        values_dir = res_dir + "values/"
-        main_package_dir =  java_dir + package
-        test_dir = src_dir + "test/java/" + package + "/"
 
+        extension = ".ts"
 
-        create_folder src_dir
-        create_folder res_dir
-        create_folder layout_dir
-        create_folder values_dir
-        create_folder and_test_dir
-        create_folder java_dir
-        create_folder main_package_dir
-        create_folder test_dir
+        root = "#{feature.downcase}/"
+        usecase = "#{root}usecase/"
+        model = "#{root}model/"
+
+        create_folder root
+        create_folder usecase
+        create_folder model
+
+        modelFactory.feature = feature
+        usecaseFactory.feature = feature
+        controllerFactory.feature = feature
+        routesFactory.feature = feature
 
         #Core files
-        create_file  directory_name + 'build.gradle', gradle.build_gralde_template
-        create_file  directory_name + '.gitignore', git.git_ignore_template
-        create_file  main_dir + "AndroidManifest.xml", manifest.manifest_template
-        create_file  test_dir + "ExampleUnitTest.kt", tests.unit_test_template
-        create_file  and_test_dir + "ExampleInstrumentedTest.kt", tests.instrumented_test_template
-        find_settings_gradle name
+        create_file  model + modelFactory.name, modelFactory.get
+        create_file  usecase + usecaseFactory.getName, usecaseFactory.getFile
+        create_file  usecase + usecaseFactory.createName, usecaseFactory.createFile
+        create_file  usecase + usecaseFactory.updateName, usecaseFactory.updateFile
+        create_file  usecase + usecaseFactory.deleteName, usecaseFactory.deleteFile
+        create_file  root + controllerFactory.name, controllerFactory.file
+        create_file root + routesFactory.name, routesFactory.file
+
 
         #Feature Directories
-        feature_dir = []
-        data_dir = feature.downcase+ "/"+ folder.clean_data_package_template 
-        di_dir = feature.downcase+ "/"+ folder.clean_di_package_template 
-        domain_dir = feature.downcase+ "/"+ folder.clean_domain_package_template 
-        presentation_dir = feature.downcase+ "/"+ folder.clean_presentation_package_template + "/"
+        # feature_dir = []
+        # data_dir = feature.downcase+ "/"+ folder.clean_data_package_template 
+        # di_dir = feature.downcase+ "/"+ folder.clean_di_package_template 
+        # domain_dir = feature.downcase+ "/"+ folder.clean_domain_package_template 
+        # presentation_dir = feature.downcase+ "/"+ folder.clean_presentation_package_template + "/"
 
-        feature_dir.push(data_dir, di_dir, domain_dir, presentation_dir)
-        feature_dir.each{ |folder| create_folder main_package_dir + "/"+ folder }
+        # feature_dir.push(data_dir, di_dir, domain_dir, presentation_dir)
+        # feature_dir.each{ |folder| create_folder main_package_dir + "/"+ folder }
 
         #Feature Files
-        activity.package = convert_patch_to_package package +"."+ presentation_dir
-        activity.feature = feature
-        values.feature = feature
+        # activity.package = convert_patch_to_package package +"."+ presentation_dir
+        # activity.feature = feature
+        # values.feature = feature
         
-        create_file values_dir + values.strings_file, values.strings_template
-        create_file   main_package_dir + "/"+ presentation_dir + activity.class, activity.class_template
-        create_file  layout_dir + activity.layout, activity.layout_template
+        # create_file values_dir + values.strings_file, values.strings_template
+        # create_file   main_package_dir + "/"+ presentation_dir + activity.class, activity.class_template
+        # create_file  layout_dir + activity.layout, activity.layout_template
 
         #Build
-        build = "./gradlew clean"
+        # build = "./gradlew clean"
         #system(build)
-    end
-
-    def find_settings_gradle library
-      f = File.open("settings.gradle", "r+")
-      lines = f.readlines
-      f.close
-
-      lines = ["include ':#{library.downcase}' \n"] + lines
-
-      output = File.new("settings.gradle", "w")
-      lines.each { |line| output.write line }
-      output.close
-    end
-
-    def convert_patch_to_package path
-      formated = ''
-      path.each_char { |c| 
-          formated.concat(c.sub('/', '.'))
-      }
-      return  formated
     end
   end
   
@@ -292,13 +265,10 @@ module MessagePrinter
   
   require 'fileutils'
   require 'set'
-  require_relative 'sample/Activities'
-  require_relative 'sample/Manifest'
-  require_relative 'sample/Folder'
-  require_relative 'sample/Gradle'
-  require_relative 'sample/Values'
-  require_relative 'sample/Test'
-  require_relative 'sample/Git'
+  require_relative 'api/model'
+  require_relative 'api/usecase'
+  require_relative 'api/controller'
+  require_relative 'api/route'
   
   include MessagePrinter
   include Helper
