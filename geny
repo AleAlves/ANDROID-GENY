@@ -274,4 +274,4 @@ module MessagePrinter
   include Helper
   include Library
   
-  ArgumentsHandler.new.start
+  ArgumentsHandler.new.start  

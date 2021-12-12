@@ -8,7 +8,7 @@ class UseCaseSample
     end
     def createFile
         return "import { UseCaseResponse } from '../../../common/usecase/UseCaseResponse';
-import { I#{@feature}, #{@feature}Model } from '../../model/#{@feature}';
+import { I#{@feature}, #{@feature}Model } from '../model/#{@feature}';
 
 export class Create#{@feature}UseCase {
 
@@ -30,7 +30,7 @@ export class Create#{@feature}UseCase {
         return "Get#{@feature}.ts".strip
     end
       def getFile
-        return "import { #{@feature}Model, I#{@feature} } from '../../model/#{@feature}';
+        return "import { #{@feature}Model, I#{@feature} } from '../model/#{@feature}';
 
 export class Get#{@feature}UseCase {
 
@@ -48,7 +48,7 @@ export class Get#{@feature}UseCase {
         return "Update#{@feature}.ts".strip
     end
       def updateFile
-        return "import { I#{@feature}, #{@feature}Model } from '../../model/#{@feature}';
+        return "import { I#{@feature}, #{@feature}Model } from '../model/#{@feature}';
 
 export class Update#{@feature}UseCase {
         
@@ -72,7 +72,7 @@ public async update(#{@feature.downcase}: I#{@feature}) {
   end
     def deleteFile
       return "import { UseCaseResponse } from '../../../common/usecase/UseCaseResponse';
-import { #{@feature}Model } from '../../model/#{@feature}';
+import { #{@feature}Model } from '../model/#{@feature}';
 
 export class Delete#{@feature}UseCase {
 

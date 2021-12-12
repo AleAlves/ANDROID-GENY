@@ -20,25 +20,34 @@ export class #{@feature}Routes extends BaseRouter {
         super();
         this.app = app
         this.get()
+        this.fetch()
         this.create()
         this.update()
         this.delete()
     }
 
+    //TODO add this.protected(), when needed
+
     private get() {
-        this.app.route('/api/v1/#{@feature.downcase}').get(this.protected(), this.controller.get)
+        this.app.route('/api/v1/#{@feature.downcase}').get(this.controller.get)
+    }
+
+    //TODO adjust the plural if needed
+
+    private fetch() {
+        this.app.route('/api/v1/#{@feature.downcase}s').get(this.controller.fetch)
     }
 
     private create() {
-        this.app.route('/api/v1/#{@feature.downcase}').post(this.protected(), this.controller.create)
+        this.app.route('/api/v1/#{@feature.downcase}').post(this.controller.create)
     }
 
     private update() {
-        this.app.route('/api/v1/#{@feature.downcase}').put(this.protected(), this.controller.update)
+        this.app.route('/api/v1/#{@feature.downcase}').put(this.controller.update)
     }
 
     private delete() {
-        this.app.route('/api/v1/#{@feature.downcase}/:id').delete(this.protected(), this.controller.delete)
+        this.app.route('/api/v1/#{@feature.downcase}/:id').delete(this.controller.delete)
     }
 }
 "

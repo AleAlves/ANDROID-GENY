@@ -9,7 +9,7 @@ class ControllerFacotry
     def file
         return "import { Request, Response } from 'express';
 import { BaseController } from '../../common/controllers/BaseController'
-import { #{@feature}Model } from '../model/#{@feature}';
+import { #{@feature}Model } from './model/#{@feature}';
 import { Create#{@feature}UseCase } from './usecase/Create#{@feature}'
 import { Get#{@feature}UseCase } from './usecase/Get#{@feature}'
 import { Delete#{@feature}UseCase } from './usecase/Delete#{@feature}'
@@ -48,7 +48,16 @@ export class #{@feature}Controller extends BaseController {
 
         let inputData = new InputData(req)
         let output = new OutputData(res)
-        output.data = await new Get#{@feature}UseCase().get(inputData.params.id)
+        output.data = await new Get#{@feature}UseCase().get(inputData.query.id)
+        super.send(output)
+    }
+
+
+    public async fetch(req: Request, res: Response) {
+
+        let inputData = new InputData(req)
+        let output = new OutputData(res)
+        output.data = await new Gett#{@feature}UseCase().fetch()
         super.send(output)
     }
 
@@ -72,7 +81,7 @@ export class #{@feature}Controller extends BaseController {
         let input = new InputData(req)
         let output = new OutputData(res)
 
-        let result = await new Delete#{@feature}UseCase().delete(input.params.id)
+        let result = await new Delete#{@feature}UseCase().delete(input.query.id)
 
         if (result.error) {
             super.onError(res, new Exception(new HTTPStatus.SUCESS.OK))
