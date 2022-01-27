@@ -47,7 +47,7 @@ export class #{@feature}Routes extends BaseRouter {
     }
 
     private delete() {
-        this.app.route('/api/v1/#{@feature.downcase}/:id').delete(this.controller.delete)
+        this.app.route('/api/v1/#{@feature.downcase}').delete(this.controller.delete)
     }
 }
 "

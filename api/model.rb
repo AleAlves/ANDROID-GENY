@@ -23,6 +23,12 @@ export const #{@feature}Schema = new Schema<I#{@feature}>({
 });
 
 export const #{@feature}Model = model<I#{@feature}>('#{@feature}', #{@feature}Schema)
+
+export function map#{@feature}(input): I#{@feature} {
+    let model = new #{@feature}Model()
+    model.example = input.example
+    return model
+}
 "
       end
 end

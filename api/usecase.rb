@@ -14,13 +14,13 @@ export class Create#{@feature}UseCase {
 
     public async create(#{@feature.downcase} : I#{@feature}): Promise<UseCaseResponse> {
 
-        let result = await new #{@feature}Model(#{@feature.downcase}).save()
+        let doc = await new #{@feature}Model(#{@feature.downcase}).save()
 
-        if (result.errors != null) {
-            return new UseCaseResponse(false, result.errors.message);
+        if (doc.errors != null) {
+            return new UseCaseResponse(false, doc.errors.message);
         }
         else {
-            return new UseCaseResponse(true, result);
+            return new UseCaseResponse(true, doc);
         }
     }
 }

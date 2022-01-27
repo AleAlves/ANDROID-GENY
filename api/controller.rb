@@ -9,7 +9,7 @@ class ControllerFacotry
     def file
         return "import { Request, Response } from 'express';
 import { BaseController } from '../../common/controllers/BaseController'
-import { #{@feature}Model } from './model/#{@feature}';
+import { #{@feature}Model, map#{@feature}Model } from './model/#{@feature}';
 import { Create#{@feature}UseCase } from './usecase/Create#{@feature}'
 import { Get#{@feature}UseCase } from './usecase/Get#{@feature}'
 import { Delete#{@feature}UseCase } from './usecase/Delete#{@feature}'
@@ -22,30 +22,22 @@ import { HTTPStatus } from '../../common/models/HTTPStatus';
 export class #{@feature}Controller extends BaseController {
 
     public async create(req: Request, res: Response) {
-
         let input = new InputData(req)
         let output = new OutputData(res)
-        let #{@feature.downcase} = new #{@feature}Model()
-
-        #{@feature.downcase}.example = input.data.#{@feature.downcase}.example 
-
+        let #{@feature.downcase} =  map#{@feature}Model()
         if (await super.validateBadRequest(res, #{@feature.downcase})) {
             return
         }
-
         let creation = await new Create#{@feature}UseCase().create(#{@feature.downcase})
-
         if (creation.error) {
             super.onError(res, new Exception(new HTTPStatus.SUCESS.OK))
             return
         }
-
         output.status = new HTTPStatus.SUCESS.CREATED
         super.send(output)
     }
 
     public async get(req: Request, res: Response) {
-
         let inputData = new InputData(req)
         let output = new OutputData(res)
         output.data = await new Get#{@feature}UseCase().get(inputData.query.id)
@@ -54,7 +46,6 @@ export class #{@feature}Controller extends BaseController {
 
 
     public async fetch(req: Request, res: Response) {
-
         let inputData = new InputData(req)
         let output = new OutputData(res)
         output.data = await new Gett#{@feature}UseCase().fetch()
@@ -62,32 +53,24 @@ export class #{@feature}Controller extends BaseController {
     }
 
     public async update(req: Request, res: Response) {
-
         let inputData = new InputData(req)
         let output = new OutputData(res)
-
         let #{@feature.downcase} = new #{@feature}Model(inputData.data);
-
         if (await super.validateBadRequest(res, #{@feature.downcase})) {
             return
         }
-
         output.data = await new Update#{@feature}UseCase().update(#{@feature.downcase})
         super.send(output)
     }
 
     public async delete(req: Request, res: Response) {
-
         let input = new InputData(req)
         let output = new OutputData(res)
-
         let result = await new Delete#{@feature}UseCase().delete(input.query.id)
-
         if (result.error) {
             super.onError(res, new Exception(new HTTPStatus.SUCESS.OK))
             return
         }
-
         output.status = new HTTPStatus.SUCESS.CREATED
         super.send(output)
     }
