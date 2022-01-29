@@ -59,7 +59,12 @@ export class #{@feature}Controller extends BaseController {
         if (await super.validateBadRequest(res, #{@feature.downcase})) {
             return
         }
-        output.data = await new Update#{@feature}UseCase().update(#{@feature.downcase})
+        let doc = await new Update#{@feature}UseCase().update(#{@feature.downcase})
+        if (doc == null) {
+            super.onError(res, new Exception(new HTTPStatus.SERVER_ERROR.INTERNAL_SERVER_ERROR))
+            return
+        }
+        output.data = doc
         super.send(output)
     }
 

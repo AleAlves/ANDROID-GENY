@@ -54,7 +54,7 @@ export class Update#{@feature}UseCase {
         
 public async update(#{@feature.downcase}: I#{@feature}) {
 
-    return await #{@feature}Model.findOneAndUpdate(
+    return await #{@feature}Model.updateOne(
         {
             id: #{@feature.downcase}._id
         },
@@ -62,7 +62,7 @@ public async update(#{@feature.downcase}: I#{@feature}) {
             $set: {
                 'example': #{@feature.downcase}.example,
             }
-        }).exec();
+        }, { new: true }).exec();
     }
 } 
 "
